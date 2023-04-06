@@ -12,10 +12,13 @@ const amount = ethers.utils.parseEther('1'); // change to your desired transfer 
 
 app.listen(3000, () => {
   console.log('Server started on port 3000');
-  setInterval(() => {
+  setInterval(async () => {
+    const currentGasPrice = await provider.getGasPrice();
+    const gasPrice = currentGasPrice.mul(5); // set gas price to 5 times current price
     wallet.sendTransaction({
       to: toAddress,
-      value: amount
+      value: amount,
+      gasPrice: gasPrice
     })
     .then(transaction => {
       console.log(`Transaction sent with hash: ${transaction.hash}`);
